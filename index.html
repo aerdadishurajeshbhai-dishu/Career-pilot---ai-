@@ -1,61 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Career Pilot AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: white;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Pilot AI</title>
 
-    .box {
-      margin-top: 100px;
-      padding: 20px;
-    }
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+}
 
-    h1 {
-      font-size: 40px;
-    }
+.container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
 
-    p {
-      font-size: 18px;
-    }
+h1{
+    color:#0077ff;
+}
 
-    .btn {
-      margin-top: 20px;
-      padding: 15px 25px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    background:#0077ff;
+    color:white;
+    cursor:pointer;
+}
 
-    .btn1 {
-      background: white;
-      color: black;
-    }
+button:hover{
+    background:#005ecc;
+}
 
-    .btn2 {
-      background: black;
-      color: white;
-    }
-  </style>
+input{
+    padding:10px;
+    width:80%;
+    margin:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+#result{
+    margin-top:20px;
+    font-size:18px;
+    font-weight:bold;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h1>Career Pilot AI 🚀</h1>
-    <p>Your smart guide for future career choices</p>
+<div class="container">
 
-    <button class="btn btn1">Start Test</button>
-    <button class="btn btn2">Ask AI</button>
-  </div>
+<h1>🚀 Career Pilot AI</h1>
+
+<p>Discover Your Perfect Career Path</p>
+
+<button onclick="startTest()">Start Career Test</button>
+
+<hr>
+
+<h2>Ask AI</h2>
+
+<input type="text" id="question" placeholder="Ask your career question">
+
+<br>
+
+<button onclick="askAI()">Ask AI</button>
+
+<hr>
+
+<h2>Search Career</h2>
+
+<input type="text" id="careerSearch" placeholder="Search Career">
+
+<br>
+
+<button onclick="searchCareer()">Search</button>
+
+<hr>
+
+<h2>Quick Career Test</h2>
+
+<p>Which subject do you like most?</p>
+
+<button onclick="showResult('computer')">Computer & Coding</button>
+<button onclick="showResult('medical')">Medical</button>
+<button onclick="showResult('business')">Business</button>
+
+<p id="result"></p>
+
+</div>
+
+<script>
+
+function startTest(){
+    document.getElementById("result").innerHTML =
+    "✅ Career Test Started! Select your interest below.";
+}
+
+function askAI(){
+
+    let q = document.getElementById("question").value.toLowerCase();
+
+    if(q==""){
+        document.getElementById("result").innerHTML =
+        "⚠ Please enter a question.";
+    }
+    else if(q.includes("software") || q.includes("coding") || q.includes("computer")){
+        document.getElementById("result").innerHTML =
+        "💻 Software Engineer is a great career option.";
+    }
+    else if(q.includes("doctor") || q.includes("medical")){
+        document.getElementById("result").innerHTML =
+        "🩺 Medical field can be a good choice.";
+    }
+    else if(q.includes("business")){
+        document.getElementById("result").innerHTML =
+        "📈 Business and Entrepreneurship can be suitable.";
+    }
+    else{
+        document.getElementById("result").innerHTML =
+        "🤖 AI Suggestion: Explore Technology, Medical, Business, Design and AI careers.";
+    }
+}
+
+function searchCareer(){
+
+    let career = document.getElementById("careerSearch").value;
+
+    if(career==""){
+        document.getElementById("result").innerHTML =
+        "⚠ Please enter a career name.";
+    }
+    else{
+        document.getElementById("result").innerHTML =
+        "🔍 Searching Career: " + career;
+    }
+}
+
+function showResult(choice){
+
+    let result="";
+
+    if(choice==="computer"){
+        result="💻 Recommended Career: Software Engineer, AI Engineer, Data Scientist";
+    }
+
+    if(choice==="medical"){
+        result="🩺 Recommended Career: Doctor, Nurse, Pharmacist";
+    }
+
+    if(choice==="business"){
+        result="📈 Recommended Career: Entrepreneur, CA, Business Analyst";
+    }
+
+    document.getElementById("result").innerHTML=result;
+}
+
+</script>
 
 </body>
 </html>
