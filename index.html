@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CareerPilot AI</title>
+  <title>Career Pilot AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+    }
+
+    .box {
+      margin-top: 100px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn1 {
+      background: white;
+      color: black;
+    }
+
+    .btn2 {
+      background: black;
+      color: white;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>CareerPilot AI</h2>
+  <div class="box">
+    <h1>Career Pilot AI 🚀</h1>
+    <p>Your smart guide for future career choices</p>
 
-<textarea id="skills" placeholder="coding, design, communication, data"></textarea>
-
-<button onclick="suggestCareer()">Get Career Suggestion</button>
-
-<div id="result"></div>
-
-<script>
-function suggestCareer() {
-  let skills = document.getElementById("skills").value.toLowerCase();
-  let result = document.getElementById("result");
-
-  if (skills.includes("coding")) {
-    result.innerHTML = "💻 Software Developer";
-  }
-  else if (skills.includes("design")) {
-    result.innerHTML = "🎨 UI/UX Designer";
-  }
-  else if (skills.includes("communication")) {
-    result.innerHTML = "📢 Marketing / Sales";
-  }
-  else if (skills.includes("data")) {
-    result.innerHTML = "📊 Data Analyst";
-  }
-  else {
-    result.innerHTML = "🤖 Enter: coding, design, communication, data";
-  }
-}
-</script>
+    <button class="btn btn1">Start Test</button>
+    <button class="btn btn2">Ask AI</button>
+  </div>
 
 </body>
 </html>
