@@ -2,169 +2,175 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Career Pilot AI</title>
 
 <style>
 body{
-    font-family: Arial, sans-serif;
-    text-align:center;
-    background:#f4f4f4;
-    margin:0;
-    padding:20px;
+  margin:0;
+  font-family:Arial;
+  background: linear-gradient(135deg,#1e88e5,#8e24aa);
+  color:white;
+  text-align:center;
 }
 
-.container{
-    max-width:700px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
+header{
+  padding:20px;
 }
 
-h1{
-    color:#0077ff;
+.card{
+  background:white;
+  color:black;
+  margin:20px auto;
+  padding:20px;
+  width:85%;
+  border-radius:15px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.3);
 }
 
 button{
-    padding:10px 20px;
-    margin:5px;
-    border:none;
-    border-radius:8px;
-    background:#0077ff;
-    color:white;
-    cursor:pointer;
+  padding:10px 15px;
+  margin:8px;
+  border:none;
+  border-radius:8px;
+  background:#1e88e5;
+  color:white;
+  cursor:pointer;
 }
 
 button:hover{
-    background:#005ecc;
+  background:#0d47a1;
 }
 
 input{
-    padding:10px;
-    width:80%;
-    margin:10px;
-    border:1px solid #ccc;
-    border-radius:8px;
-}
-
-#result{
-    margin-top:20px;
-    font-size:18px;
-    font-weight:bold;
+  padding:10px;
+  width:70%;
+  border-radius:8px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
+<header>
 <h1>🚀 Career Pilot AI</h1>
+<p>Your Smart Career Guidance System</p>
+</header>
 
-<p>Discover Your Perfect Career Path</p>
+<!-- ABOUT -->
+<div class="card">
+<h2>📌 About Project</h2>
+<p>
+Career Pilot AI helps students choose best career using quiz, AI mentor and roadmap.
+It also provides exam guidance like JEE, NEET and UPSC.
+</p>
+</div>
 
-<button onclick="startTest()">Start Career Test</button>
+<!-- QUIZ -->
+<div class="card">
+<h2>🧠 Career Quiz</h2>
+<button onclick="quiz()">Start Quiz</button>
+<p id="qres"></p>
+</div>
 
-<hr>
+<!-- ROADMAP -->
+<div class="card">
+<h2>🧭 Career Roadmap</h2>
+<p id="road"></p>
+</div>
 
-<h2>Ask AI</h2>
+<!-- EXAMS -->
+<div class="card">
+<h2>📚 Exam Guidance</h2>
+<button onclick="exam('jee')">JEE</button>
+<button onclick="exam('neet')">NEET</button>
+<button onclick="exam('upsc')">UPSC</button>
+<p id="exam"></p>
+</div>
 
-<input type="text" id="question" placeholder="Ask your career question">
-
+<!-- AI -->
+<div class="card">
+<h2>🤖 AI Mentor</h2>
+<input id="ask" placeholder="Ask career question">
 <br>
-
-<button onclick="askAI()">Ask AI</button>
-
-<hr>
-
-<h2>Search Career</h2>
-
-<input type="text" id="careerSearch" placeholder="Search Career">
-
-<br>
-
-<button onclick="searchCareer()">Search</button>
-
-<hr>
-
-<h2>Quick Career Test</h2>
-
-<p>Which subject do you like most?</p>
-
-<button onclick="showResult('computer')">Computer & Coding</button>
-<button onclick="showResult('medical')">Medical</button>
-<button onclick="showResult('business')">Business</button>
-
-<p id="result"></p>
-
+<button onclick="ai()">Ask</button>
+<p id="ans"></p>
 </div>
 
 <script>
 
-function startTest(){
-    document.getElementById("result").innerHTML =
-    "✅ Career Test Started! Select your interest below.";
+function quiz(){
+
+  let score=0;
+
+  let a=prompt("Do you like coding? yes/no");
+  let b=prompt("Do you like maths? yes/no");
+  let c=prompt("Do you like business? yes/no");
+
+  if(a=="yes") score+=40;
+  if(b=="yes") score+=30;
+  if(c=="yes") score+=30;
+
+  let career="";
+
+  if(score>=70){
+    career="Software Developer 💻";
+  }
+  else if(score>=50){
+    career="Data Analyst 📊";
+  }
+  else{
+    career="Business / Marketing 📈";
+  }
+
+  document.getElementById("qres").innerHTML =
+  "Score: "+score+"/100<br>Career: "+career;
+
+  if(career.includes("Software")){
+    document.getElementById("road").innerHTML =
+    "HTML → CSS → JS → React → Projects";
+  }
+  else if(career.includes("Data")){
+    document.getElementById("road").innerHTML =
+    "Excel → SQL → Python → Data Projects";
+  }
+  else{
+    document.getElementById("road").innerHTML =
+    "Communication → Business Skills → Internship";
+  }
 }
 
-function askAI(){
+function exam(type){
 
-    let q = document.getElementById("question").value.toLowerCase();
-
-    if(q==""){
-        document.getElementById("result").innerHTML =
-        "⚠ Please enter a question.";
-    }
-    else if(q.includes("software") || q.includes("coding") || q.includes("computer")){
-        document.getElementById("result").innerHTML =
-        "💻 Software Engineer is a great career option.";
-    }
-    else if(q.includes("doctor") || q.includes("medical")){
-        document.getElementById("result").innerHTML =
-        "🩺 Medical field can be a good choice.";
-    }
-    else if(q.includes("business")){
-        document.getElementById("result").innerHTML =
-        "📈 Business and Entrepreneurship can be suitable.";
-    }
-    else{
-        document.getElementById("result").innerHTML =
-        "🤖 AI Suggestion: Explore Technology, Medical, Business, Design and AI careers.";
-    }
+  if(type=="jee"){
+    document.getElementById("exam").innerHTML=
+    "JEE: Physics + Maths + Mock Tests";
+  }
+  if(type=="neet"){
+    document.getElementById("exam").innerHTML=
+    "NEET: Biology + Chemistry NCERT";
+  }
+  if(type=="upsc"){
+    document.getElementById("exam").innerHTML=
+    "UPSC: GK + Polity + Current Affairs";
+  }
 }
 
-function searchCareer(){
+function ai(){
 
-    let career = document.getElementById("careerSearch").value;
+  let q=document.getElementById("ask").value;
+  let r="";
 
-    if(career==""){
-        document.getElementById("result").innerHTML =
-        "⚠ Please enter a career name.";
-    }
-    else{
-        document.getElementById("result").innerHTML =
-        "🔍 Searching Career: " + career;
-    }
-}
+  if(q.includes("after 12th")){
+    r="Choose stream based on interest: Science/Commerce/IT";
+  }
+  else if(q.includes("software")){
+    r="Start with HTML, CSS, JavaScript";
+  }
+  else{
+    r="Focus on skills + projects + practice";
+  }
 
-function showResult(choice){
-
-    let result="";
-
-    if(choice==="computer"){
-        result="💻 Recommended Career: Software Engineer, AI Engineer, Data Scientist";
-    }
-
-    if(choice==="medical"){
-        result="🩺 Recommended Career: Doctor, Nurse, Pharmacist";
-    }
-
-    if(choice==="business"){
-        result="📈 Recommended Career: Entrepreneur, CA, Business Analyst";
-    }
-
-    document.getElementById("result").innerHTML=result;
+  document.getElementById("ans").innerHTML=r;
 }
 
 </script>
