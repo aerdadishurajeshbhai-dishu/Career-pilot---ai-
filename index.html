@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CareerPilot AI</title>
+</head>
+<body>
+
+<h2>CareerPilot AI</h2>
+
+<textarea id="skills" placeholder="coding, design, communication, data"></textarea>
+
+<button onclick="suggestCareer()">Get Career Suggestion</button>
+
+<div id="result"></div>
+
+<script>
+function suggestCareer() {
+  let skills = document.getElementById("skills").value.toLowerCase();
+  let result = document.getElementById("result");
+
+  if (skills.includes("coding")) {
+    result.innerHTML = "💻 Software Developer";
+  }
+  else if (skills.includes("design")) {
+    result.innerHTML = "🎨 UI/UX Designer";
+  }
+  else if (skills.includes("communication")) {
+    result.innerHTML = "📢 Marketing / Sales";
+  }
+  else if (skills.includes("data")) {
+    result.innerHTML = "📊 Data Analyst";
+  }
+  else {
+    result.innerHTML = "🤖 Enter: coding, design, communication, data";
+  }
+}
+</script>
+
+</body>
+</html>
