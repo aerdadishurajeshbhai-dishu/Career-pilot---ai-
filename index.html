@@ -2,49 +2,87 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Career Pilot AI</title>
+<title>CareerPilot AI - Final Version</title>
 
 <style>
 body{
-  margin:0;
-  font-family:Arial;
-  background: linear-gradient(135deg,#1e88e5,#8e24aa);
-  color:white;
-  text-align:center;
+    font-family: Arial;
+    margin:0;
+    background:#0f172a;
+    color:white;
 }
 
 header{
-  padding:20px;
+    text-align:center;
+    padding:20px;
+    background:#111827;
+}
+
+h1{color:#38bdf8}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+    padding:20px;
 }
 
 .card{
-  background:white;
-  color:black;
-  margin:20px auto;
-  padding:20px;
-  width:85%;
-  border-radius:15px;
-  box-shadow:0 10px 20px rgba(0,0,0,0.3);
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+}
+
+input,textarea{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border-radius:8px;
+    border:none;
 }
 
 button{
-  padding:10px 15px;
-  margin:8px;
-  border:none;
-  border-radius:8px;
-  background:#1e88e5;
-  color:white;
-  cursor:pointer;
+    background:#38bdf8;
+    border:none;
+    padding:10px;
+    width:100%;
+    margin-top:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
 button:hover{
-  background:#0d47a1;
+    background:#0ea5e9;
 }
 
-input{
-  padding:10px;
-  width:70%;
-  border-radius:8px;
+.result{
+    margin-top:10px;
+    color:#22c55e;
+}
+
+/* Dashboard */
+.progress{
+    width:100%;
+    background:#334155;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.bar{
+    height:12px;
+    width:0%;
+    background:#38bdf8;
+    transition:1s;
+}
+
+/* Voice section */
+.voiceBox{
+    margin-top:10px;
+    padding:10px;
+    background:#0b1220;
+    border-radius:10px;
 }
 </style>
 </head>
@@ -52,125 +90,413 @@ input{
 <body>
 
 <header>
-<h1>🚀 Career Pilot AI</h1>
-<p>Your Smart Career Guidance System</p>
+<h1>🚀 CareerPilot AI</h1>
+<p>Your Smart AI Career Mentor</p>
 </header>
 
-<!-- ABOUT -->
+<div class="container">
+
+<!-- 1. RESUME -->
 <div class="card">
-<h2>📌 About Project</h2>
-<p>
-Career Pilot AI helps students choose best career using quiz, AI mentor and roadmap.
-It also provides exam guidance like JEE, NEET and UPSC.
-</p>
+<h2>📄 AI Resume Analyzer</h2>
+<textarea id="resume" placeholder="Paste your resume..."></textarea>
+<button onclick="analyzeResume()">Check ATS Score</button>
+<div id="resumeResult" class="result"></div>
+
+<button onclick="downloadReport()">📄 Download Report</button>
 </div>
 
-<!-- QUIZ -->
+<!-- 2. JOB MATCH -->
 <div class="card">
-<h2>🧠 Career Quiz</h2>
-<button onclick="quiz()">Start Quiz</button>
-<p id="qres"></p>
+<h2>💼 AI Job Matcher</h2>
+<input id="skills" placeholder="Enter skills (React, Python, Node)">
+<button onclick="jobMatch()">Find Jobs</button>
+<div id="jobResult" class="result"></div>
 </div>
 
-<!-- ROADMAP -->
+<!-- 3. VOICE INTERVIEW -->
 <div class="card">
-<h2>🧭 Career Roadmap</h2>
-<p id="road"></p>
+<h2>🎤 Voice AI Interview</h2>
+<button onclick="startVoiceInterview()">Start Interview</button>
+<div class="voiceBox">
+<p id="voiceQ">Click start to begin</p>
+</div>
 </div>
 
-<!-- EXAMS -->
+<!-- 4. DASHBOARD -->
 <div class="card">
-<h2>📚 Exam Guidance</h2>
-<button onclick="exam('jee')">JEE</button>
-<button onclick="exam('neet')">NEET</button>
-<button onclick="exam('upsc')">UPSC</button>
-<p id="exam"></p>
+<h2>📊 Skill Dashboard</h2>
+
+HTML
+<div class="progress"><div class="bar" id="h"></div></div>
+
+JavaScript
+<div class="progress"><div class="bar" id="j"></div></div>
+
+React
+<div class="progress"><div class="bar" id="r"></div></div>
+
+<button onclick="animateBars()">Show Progress</button>
 </div>
 
-<!-- AI -->
-<div class="card">
-<h2>🤖 AI Mentor</h2>
-<input id="ask" placeholder="Ask career question">
-<br>
-<button onclick="ai()">Ask</button>
-<p id="ans"></p>
 </div>
 
 <script>
 
-function quiz(){
+/* 1. ATS SCORE */
+function analyzeResume(){
+    let text = document.getElementById("resume").value.toLowerCase();
 
-  let score=0;
+    let score = 50;
 
-  let a=prompt("Do you like coding? yes/no");
-  let b=prompt("Do you like maths? yes/no");
-  let c=prompt("Do you like business? yes/no");
+    let keywords = ["html","css","javascript","react","node","python","sql","api","git"];
 
-  if(a=="yes") score+=40;
-  if(b=="yes") score+=30;
-  if(c=="yes") score+=30;
+    keywords.forEach(k=>{
+        if(text.includes(k)){
+            score += 6;
+        }
+    });
 
-  let career="";
+    if(text.length > 300) score += 10;
 
-  if(score>=70){
-    career="Software Developer 💻";
-  }
-  else if(score>=50){
-    career="Data Analyst 📊";
-  }
-  else{
-    career="Business / Marketing 📈";
-  }
+    if(score > 100) score = 100;
 
-  document.getElementById("qres").innerHTML =
-  "Score: "+score+"/100<br>Career: "+career;
-
-  if(career.includes("Software")){
-    document.getElementById("road").innerHTML =
-    "HTML → CSS → JS → React → Projects";
-  }
-  else if(career.includes("Data")){
-    document.getElementById("road").innerHTML =
-    "Excel → SQL → Python → Data Projects";
-  }
-  else{
-    document.getElementById("road").innerHTML =
-    "Communication → Business Skills → Internship";
-  }
+    document.getElementById("resumeResult").innerHTML =
+    "🔥 ATS Score: " + score + "/100";
 }
 
-function exam(type){
+/* 2. JOB MATCH */
+function jobMatch(){
+    let skills = document.getElementById("skills").value.toLowerCase();
+    let jobs = [];
 
-  if(type=="jee"){
-    document.getElementById("exam").innerHTML=
-    "JEE: Physics + Maths + Mock Tests";
-  }
-  if(type=="neet"){
-    document.getElementById("exam").innerHTML=
-    "NEET: Biology + Chemistry NCERT";
-  }
-  if(type=="upsc"){
-    document.getElementById("exam").innerHTML=
-    "UPSC: GK + Polity + Current Affairs";
-  }
+    if(skills.includes("react") || skills.includes("js")){
+        jobs.push("Frontend Developer (92%)");
+    }
+    if(skills.includes("python")){
+        jobs.push("Data Analyst (88%)");
+    }
+    if(skills.includes("node")){
+        jobs.push("Backend Developer (85%)");
+    }
+
+    if(jobs.length === 0){
+        jobs.push("Beginner Internship (70%)");
+    }
+
+    document.getElementById("jobResult").innerHTML =
+    "🔥 Matches:<br>" + jobs.join("<br>");
 }
 
-function ai(){
+/* 3. VOICE INTERVIEW */
+let qList = [
+"Tell me about yourself",
+"What are your strengths?",
+"What is JavaScript?",
+"Explain a project you built",
+"Why should we hire you?"
+];
 
-  let q=document.getElementById("ask").value;
-  let r="";
+let i = 0;
 
-  if(q.includes("after 12th")){
-    r="Choose stream based on interest: Science/Commerce/IT";
-  }
-  else if(q.includes("software")){
-    r="Start with HTML, CSS, JavaScript";
-  }
-  else{
-    r="Focus on skills + projects + practice";
-  }
+function speak(text){
+    let msg = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(msg);
+}
 
-  document.getElementById("ans").innerHTML=r;
+function startVoiceInterview(){
+    i = 0;
+    nextQ();
+}
+
+function nextQ(){
+    if(i < qList.length){
+        let q = qList[i];
+        document.getElementById("voiceQ").innerText = q;
+        speak(q);
+        i++;
+        setTimeout(nextQ, 7000);
+    }
+}
+
+/* 4. DASHBOARD */
+function animateBars(){
+    document.getElementById("h").style.width = "90%";
+    document.getElementById("j").style.width = "75%";
+    document.getElementById("r").style.width = "60%";
+}
+
+/* 5. DOWNLOAD REPORT */
+function downloadReport(){
+    let resume = document.getElementById("resume").value;
+    let score = document.getElementById("resumeResult").innerText;
+
+    let data =
+`CAREERPILOT AI REPORT
+
+RESUME:
+${resume}
+
+RESULT:
+${score}`;
+
+    let blob = new Blob([data], {type:"text/plain"});
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "CareerPilot_Report.txt";
+    a.click();
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareerPilot AI - Final Version</title>
+
+<style>
+body{
+    font-family: Arial;
+    margin:0;
+    background:#0f172a;
+    color:white;
+}
+
+header{
+    text-align:center;
+    padding:20px;
+    background:#111827;
+}
+
+h1{color:#38bdf8}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+}
+
+input,textarea{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border-radius:8px;
+    border:none;
+}
+
+button{
+    background:#38bdf8;
+    border:none;
+    padding:10px;
+    width:100%;
+    margin-top:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#0ea5e9;
+}
+
+.result{
+    margin-top:10px;
+    color:#22c55e;
+}
+
+/* Dashboard */
+.progress{
+    width:100%;
+    background:#334155;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.bar{
+    height:12px;
+    width:0%;
+    background:#38bdf8;
+    transition:1s;
+}
+
+/* Voice section */
+.voiceBox{
+    margin-top:10px;
+    padding:10px;
+    background:#0b1220;
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🚀 CareerPilot AI</h1>
+<p>Your Smart AI Career Mentor</p>
+</header>
+
+<div class="container">
+
+<!-- 1. RESUME -->
+<div class="card">
+<h2>📄 AI Resume Analyzer</h2>
+<textarea id="resume" placeholder="Paste your resume..."></textarea>
+<button onclick="analyzeResume()">Check ATS Score</button>
+<div id="resumeResult" class="result"></div>
+
+<button onclick="downloadReport()">📄 Download Report</button>
+</div>
+
+<!-- 2. JOB MATCH -->
+<div class="card">
+<h2>💼 AI Job Matcher</h2>
+<input id="skills" placeholder="Enter skills (React, Python, Node)">
+<button onclick="jobMatch()">Find Jobs</button>
+<div id="jobResult" class="result"></div>
+</div>
+
+<!-- 3. VOICE INTERVIEW -->
+<div class="card">
+<h2>🎤 Voice AI Interview</h2>
+<button onclick="startVoiceInterview()">Start Interview</button>
+<div class="voiceBox">
+<p id="voiceQ">Click start to begin</p>
+</div>
+</div>
+
+<!-- 4. DASHBOARD -->
+<div class="card">
+<h2>📊 Skill Dashboard</h2>
+
+HTML
+<div class="progress"><div class="bar" id="h"></div></div>
+
+JavaScript
+<div class="progress"><div class="bar" id="j"></div></div>
+
+React
+<div class="progress"><div class="bar" id="r"></div></div>
+
+<button onclick="animateBars()">Show Progress</button>
+</div>
+
+</div>
+
+<script>
+
+/* 1. ATS SCORE */
+function analyzeResume(){
+    let text = document.getElementById("resume").value.toLowerCase();
+
+    let score = 50;
+
+    let keywords = ["html","css","javascript","react","node","python","sql","api","git"];
+
+    keywords.forEach(k=>{
+        if(text.includes(k)){
+            score += 6;
+        }
+    });
+
+    if(text.length > 300) score += 10;
+
+    if(score > 100) score = 100;
+
+    document.getElementById("resumeResult").innerHTML =
+    "🔥 ATS Score: " + score + "/100";
+}
+
+/* 2. JOB MATCH */
+function jobMatch(){
+    let skills = document.getElementById("skills").value.toLowerCase();
+    let jobs = [];
+
+    if(skills.includes("react") || skills.includes("js")){
+        jobs.push("Frontend Developer (92%)");
+    }
+    if(skills.includes("python")){
+        jobs.push("Data Analyst (88%)");
+    }
+    if(skills.includes("node")){
+        jobs.push("Backend Developer (85%)");
+    }
+
+    if(jobs.length === 0){
+        jobs.push("Beginner Internship (70%)");
+    }
+
+    document.getElementById("jobResult").innerHTML =
+    "🔥 Matches:<br>" + jobs.join("<br>");
+}
+
+/* 3. VOICE INTERVIEW */
+let qList = [
+"Tell me about yourself",
+"What are your strengths?",
+"What is JavaScript?",
+"Explain a project you built",
+"Why should we hire you?"
+];
+
+let i = 0;
+
+function speak(text){
+    let msg = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(msg);
+}
+
+function startVoiceInterview(){
+    i = 0;
+    nextQ();
+}
+
+function nextQ(){
+    if(i < qList.length){
+        let q = qList[i];
+        document.getElementById("voiceQ").innerText = q;
+        speak(q);
+        i++;
+        setTimeout(nextQ, 7000);
+    }
+}
+
+/* 4. DASHBOARD */
+function animateBars(){
+    document.getElementById("h").style.width = "90%";
+    document.getElementById("j").style.width = "75%";
+    document.getElementById("r").style.width = "60%";
+}
+
+/* 5. DOWNLOAD REPORT */
+function downloadReport(){
+    let resume = document.getElementById("resume").value;
+    let score = document.getElementById("resumeResult").innerText;
+
+    let data =
+`CAREERPILOT AI REPORT
+
+RESUME:
+${resume}
+
+RESULT:
+${score}`;
+
+    let blob = new Blob([data], {type:"text/plain"});
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "CareerPilot_Report.txt";
+    a.click();
 }
 
 </script>
