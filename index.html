@@ -2,24 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CareerPilot AI - Final Polish</title>
+<title>CareerPilot AI</title>
 
 <style>
 body{
     margin:0;
     font-family:Arial;
-    background:#0f172a;
+    background:linear-gradient(135deg,#0f172a,#020617);
     color:white;
 }
 
+/* HEADER */
 header{
     text-align:center;
     padding:25px;
-    background:#111827;
+    background:#0b1220;
+    border-bottom:1px solid #1f2937;
 }
 
 h1{color:#38bdf8}
 
+/* GRID */
 .container{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -27,13 +30,20 @@ h1{color:#38bdf8}
     padding:20px;
 }
 
+/* CARD */
 .card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    background:#111827;
+    padding:18px;
+    border-radius:14px;
+    box-shadow:0 0 12px rgba(0,0,0,0.4);
+    transition:0.3s;
 }
 
+.card:hover{
+    transform:scale(1.02);
+}
+
+/* INPUT */
 input,textarea{
     width:100%;
     padding:10px;
@@ -42,6 +52,7 @@ input,textarea{
     border-radius:8px;
 }
 
+/* BUTTON */
 button{
     width:100%;
     padding:10px;
@@ -57,24 +68,21 @@ button:hover{
     background:#0ea5e9;
 }
 
+/* RESULT */
 .result{
     margin-top:10px;
     color:#22c55e;
+    font-size:14px;
 }
 
-/* progress */
-.progress{
-    background:#334155;
-    border-radius:20px;
-    overflow:hidden;
-    margin-top:8px;
-}
-
-.bar{
-    height:12px;
-    width:0%;
-    background:#38bdf8;
-    transition:1s;
+/* BADGE */
+.badge{
+    display:inline-block;
+    padding:4px 8px;
+    background:#1e40af;
+    border-radius:6px;
+    font-size:12px;
+    margin-bottom:6px;
 }
 </style>
 </head>
@@ -83,86 +91,168 @@ button:hover{
 
 <header>
 <h1>🚀 CareerPilot AI</h1>
-<p>AI Career Mentor Platform</p>
+<p>All-in-One AI Career Assistant</p>
 </header>
 
 <div class="container">
 
-<!-- RESUME -->
+<!-- 1 RESUME -->
 <div class="card">
-<h2>📄 Resume Analyzer</h2>
+<div class="badge">Feature 1</div>
+<h3>📄 Resume Analyzer</h3>
 <textarea id="resume" placeholder="Paste resume..."></textarea>
-
-<input type="file" onchange="loadFile(event)">
-
-<button onclick="analyzeResume()">Analyze Resume</button>
-
-<div id="resumeResult" class="result"></div>
+<button onclick="resumeAI()">Analyze</button>
+<div id="resOut" class="result"></div>
 </div>
 
-<!-- JOB MATCH -->
+<!-- 2 JOB MATCH -->
 <div class="card">
-<h2>💼 Job Matcher</h2>
+<div class="badge">Feature 2</div>
+<h3>💼 Job Matcher</h3>
 <input id="skills" placeholder="Enter skills">
-<button onclick="jobMatch()">Find Jobs</button>
-<div id="jobResult" class="result"></div>
+<button onclick="jobAI()">Find Jobs</button>
+<div id="jobOut" class="result"></div>
 </div>
 
-<!-- VOICE INTERVIEW -->
+<!-- 3 VOICE -->
 <div class="card">
-<h2>🎤 Voice Interview</h2>
-<button onclick="startInterview()">Start Interview</button>
-<p id="qBox"></p>
-<div id="scoreBox" class="result"></div>
+<div class="badge">Feature 3</div>
+<h3>🎤 Voice Interview</h3>
+<button onclick="voiceAI()">Start</button>
+<p id="q"></p>
+<div id="voiceOut" class="result"></div>
 </div>
 
-<!-- ROADMAP -->
+<!-- 4 ROADMAP -->
 <div class="card">
-<h2>📊 Career Roadmap</h2>
+<div class="badge">Feature 4</div>
+<h3>📊 Career Roadmap</h3>
 <input id="goal" placeholder="Frontend / Backend / Data">
-<button onclick="roadmap()">Generate Roadmap</button>
-<div id="roadmapResult" class="result"></div>
+<button onclick="roadmapAI()">Generate</button>
+<div id="roadOut" class="result"></div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- 5 DASHBOARD -->
 <div class="card">
-<h2>📈 Job Readiness Score</h2>
+<div class="badge">Feature 5</div>
+<h3>📈 Skill Dashboard</h3>
 
 HTML
-<div class="progress"><div class="bar" id="h"></div></div>
-
-JS
-<div class="progress"><div class="bar" id="j"></div></div>
-
-AI Thinking
-<div class="progress"><div class="bar" id="a"></div></div>
-
-<button onclick="showProgress()">Calculate Score</button>
+<div style="background:#334155;height:10px;border-radius:20px;">
+<div id="h" style="height:10px;width:0;background:#38bdf8;border-radius:20px;"></div>
 </div>
 
-<!-- REPORT -->
+JS
+<div style="background:#334155;height:10px;border-radius:20px;margin-top:6px;">
+<div id="j" style="height:10px;width:0;background:#38bdf8;border-radius:20px;"></div>
+</div>
+
+<button onclick="dashAI()">Show Progress</button>
+</div>
+
+<!-- 6 REPORT -->
 <div class="card">
-<h2>📄 Download Report</h2>
-<button onclick="downloadReport()">Download AI Report</button>
+<div class="badge">Feature 6</div>
+<h3>📄 AI Report</h3>
+<button onclick="downloadAI()">Download Report</button>
 </div>
 
 </div>
 
 <script>
 
-let resumeText = "";
+/* 1 RESUME */
+function resumeAI(){
+    let t = document.getElementById("resume").value.toLowerCase();
 
-/* FILE LOAD */
-function loadFile(event){
-    let file = event.target.files[0];
-    let reader = new FileReader();
+    let score = 40;
+    let keys = ["html","css","js","react","node","python","sql","api"];
 
-    reader.onload = function(){
-        resumeText = reader.result;
-        document.getElementById("resume").value = resumeText;
-    }
+    keys.forEach(k=>{
+        if(t.includes(k)) score += 7;
+    });
 
-    reader.readAsText(file);
+    if(score > 100) score = 100;
+
+    document.getElementById("resOut").innerHTML =
+    "🔥 ATS Score: " + score + "/100";
 }
 
+/* 2 JOB */
+function jobAI(){
+    let s = document.getElementById("skills").value.toLowerCase();
+    let jobs = [];
 
+    if(s.includes("react") || s.includes("js")){
+        jobs.push("Frontend Dev (92%)");
+    }
+    if(s.includes("python")){
+        jobs.push("Data Analyst (88%)");
+    }
+    if(s.includes("node")){
+        jobs.push("Backend Dev (85%)");
+    }
+
+    if(jobs.length === 0){
+        jobs.push("Internship Role (70%)");
+    }
+
+    document.getElementById("jobOut").innerHTML = jobs.join("<br>");
+}
+
+/* 3 VOICE */
+let qList = ["Tell me about yourself","Your strength?","What is JS?"];
+let i=0;
+
+function voiceAI(){
+    if(i < qList.length){
+        document.getElementById("q").innerText = qList[i];
+        speechSynthesis.speak(new SpeechSynthesisUtterance(qList[i]));
+        i++;
+    }else{
+        document.getElementById("voiceOut").innerText = "Interview Completed";
+        i=0;
+    }
+}
+
+/* 4 ROADMAP */
+function roadmapAI(){
+    let g = document.getElementById("goal").value.toLowerCase();
+    let r = "Learn Basics → Projects → Internship";
+
+    if(g.includes("frontend")) r="HTML → CSS → JS → React";
+    if(g.includes("backend")) r="Node → API → DB → Deploy";
+    if(g.includes("data")) r="Excel → SQL → Python → ML";
+
+    document.getElementById("roadOut").innerHTML = r;
+}
+
+/* 5 DASHBOARD */
+function dashAI(){
+    document.getElementById("h").style.width="90%";
+    document.getElementById("j").style.width="80%";
+}
+
+/* 6 REPORT */
+function downloadAI(){
+    let text = `
+CAREERPILOT AI REPORT
+
+Resume:
+${document.getElementById("resume").value}
+
+Skills:
+${document.getElementById("skills").value}
+`;
+
+    let blob = new Blob([text],{type:"text/plain"});
+    let a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="report.txt";
+    a.click();
+}
+
+</script>
+
+</body>
+</html>
