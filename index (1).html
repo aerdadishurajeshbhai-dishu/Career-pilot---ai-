@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerPilot AI</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#0b1220;
+color:white;
+overflow:hidden;
+}
+
+/* TOP TITLE */
+.logo{
+text-align:center;
+font-size:36px;
+font-weight:900;
+padding:15px;
+color:#38bdf8;
+}
+
+/* LAYOUT */
+.container{
+display:flex;
+height:90vh;
+gap:15px;
+padding:15px;
+}
+
+/* LEFT FEATURES */
+.left{
+width:35%;
+background:rgba(255,255,255,0.06);
+border-radius:20px;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:15px;
+border-radius:12px;
+line-height:1.4;
+}
+
+/* RIGHT CHAT */
+.right{
+width:65%;
+background:rgba(255,255,255,0.05);
+border-radius:20px;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+.header{
+padding:15px;
+text-align:center;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.chat{
+flex:1;
+padding:15px;
+overflow:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.msg{
+padding:12px;
+border-radius:10px;
+max-width:75%;
+}
+
+.user{background:#2563eb;align-self:flex-end;}
+.bot{background:rgba(255,255,255,0.1);align-self:flex-start;}
+
+/* INPUT */
+.inputBox{
+display:flex;
+padding:15px;
+gap:10px;
+border-top:1px solid rgba(255,255,255,0.1);
+}
+
+input{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+background:#3b82f6;
+color:white;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="logo">🚀 CareerPilot AI</div>
+
+<div class="container">
+
+<!-- LEFT FEATURES (6 FEATURES ONLY) -->
+<div class="left">
+
+<div class="card">🧠 AI Resume Analyzer — ATS Score + Improvements</div>
+<div class="card">🎯 Job Matching Engine — Best Jobs for You</div>
+<div class="card">🎤 AI Mock Interview — Real HR Simulation</div>
+<div class="card">📊 Career Dashboard — Track Progress</div>
+<div class="card">📄 Resume Upload AI Analyzer</div>
+<div class="card">🤖 AI Career Roadmap Generator</div>
+
+</div>
+
+<!-- RIGHT CHAT -->
+<div class="right">
+
+<div class="header">
+<h2>💬 AI Career Assistant (ChatGPT)</h2>
+</div>
+
+<div class="chat" id="chat">
+<div class="msg bot">Hello 👋 I am CareerPilot AI</div>
+</div>
+
+<div class="inputBox">
+<input id="input" placeholder="Ask anything..." />
+<button onclick="send()">Send</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function addMsg(text,cls){
+let div=document.createElement("div");
+div.className="msg "+cls;
+div.innerText=text;
+document.getElementById("chat").appendChild(div);
+document.getElementById("chat").scrollTop=999999;
+}
+
+/* REAL CHATGPT API CALL */
+async function send(){
+let input=document.getElementById("input");
+let text=input.value;
+if(!text) return;
+
+addMsg(text,"user");
+addMsg("Thinking... 🤖","bot");
+
+let res = await fetch("http://localhost:3000/chat",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:text})
+});
+
+let data = await res.json();
+
+document.querySelector(".bot:last-child").innerText = data.reply;
+
+input.value="";
+}
+
+</script>
+
+</body>
+</html>
