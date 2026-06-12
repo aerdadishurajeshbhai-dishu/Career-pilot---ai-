@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,47 +9,46 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0b1220;
+background:linear-gradient(120deg,#0b1220,#05070f);
 color:white;
 }
 
 .header{
 text-align:center;
-padding:15px;
-font-size:26px;
+padding:18px;
+font-size:30px;
 font-weight:bold;
 color:#38bdf8;
+letter-spacing:1px;
 }
 
-/* LAYOUT */
 .container{
 display:flex;
 height:90vh;
 }
 
-/* LEFT FEATURES */
 .left{
-width:35%;
+width:30%;
 background:rgba(255,255,255,0.05);
 padding:15px;
-overflow:auto;
 }
 
 .card{
 background:rgba(255,255,255,0.08);
-padding:10px;
+padding:12px;
 margin-bottom:10px;
 border-radius:10px;
 cursor:pointer;
+transition:0.2s;
 }
 
 .card:hover{
 background:#2563eb;
+transform:scale(1.03);
 }
 
-/* RIGHT CHAT */
 .right{
-width:65%;
+width:70%;
 display:flex;
 flex-direction:column;
 }
@@ -67,16 +66,23 @@ gap:10px;
 padding:10px;
 border-radius:10px;
 max-width:75%;
+white-space:pre-line;
+animation:fade 0.3s ease-in;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 .user{background:#2563eb;align-self:flex-end;}
 .bot{background:rgba(255,255,255,0.1);align-self:flex-start;}
 
-/* INPUT */
 .inputBox{
 display:flex;
 padding:10px;
 gap:10px;
+border-top:1px solid rgba(255,255,255,0.1);
 }
 
 input{
@@ -84,35 +90,43 @@ flex:1;
 padding:10px;
 border:none;
 border-radius:8px;
+outline:none;
 }
 
 button{
-padding:10px;
+padding:10px 14px;
 border:none;
 border-radius:8px;
 background:#3b82f6;
 color:white;
 cursor:pointer;
 }
-button:hover{background:#2563eb;}
+
+button:hover{
+background:#2563eb;
+}
+
+.tag{
+font-size:12px;
+opacity:0.7;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">🚀 CareerPilot AI - Feature Version</div>
+<div class="header">🚀 CareerPilot AI <div class="tag">Your Smart Career Assistant</div></div>
 
 <div class="container">
 
-<!-- LEFT FEATURES -->
+<!-- LEFT -->
 <div class="left">
 
 <div class="card" onclick="quick('resume')">📄 Resume Analyzer</div>
-<div class="card" onclick="quick('job')">🎯 Job Matcher</div>
-<div class="card" onclick="quick('interview')">🎤 Mock Interview</div>
+<div class="card" onclick="quick('job')">🎯 Job Guidance</div>
+<div class="card" onclick="quick('interview')">🎤 Interview Prep</div>
 <div class="card" onclick="quick('skills')">🧠 Skill Builder</div>
 <div class="card" onclick="quick('career')">📊 Career Roadmap</div>
-<div class="card" onclick="quick('ai')">🤖 AI Career Advice</div>
 
 </div>
 
@@ -120,7 +134,7 @@ button:hover{background:#2563eb;}
 <div class="right">
 
 <div class="chat" id="chat">
-<div class="msg bot">👋 Welcome to CareerPilot AI</div>
+<div class="msg bot">👋 Hi! I am CareerPilot AI. Ask me anything about your career.</div>
 </div>
 
 <div class="inputBox">
@@ -142,69 +156,60 @@ document.getElementById("chat").appendChild(div);
 document.getElementById("chat").scrollTop=999999;
 }
 
-/* SMART ENGINE */
-function getAnswer(text){
-
+function getAI(text){
 text=text.toLowerCase();
 
 if(text.includes("resume")){
-return "📄 Resume Tips: Keep 1 page, add skills, projects, ATS keywords.";
+return "📄 Resume Tips:\n• Add projects\n• Add skills\n• Keep 1 page\n• Use ATS keywords\n• Make it clean & simple";
 }
 
 if(text.includes("job")){
-return "🎯 Apply on LinkedIn daily + build projects + update profile.";
+return "🎯 Job Strategy:\n• Apply daily\n• Improve LinkedIn\n• Build 2–3 projects\n• Do internships if possible";
 }
 
 if(text.includes("interview")){
-return "🎤 Practice HR + DSA + communication skills daily.";
+return "🎤 Interview Prep:\n• HR questions practice\n• Basic DSA\n• Communication skills\n• Confidence matters most";
 }
 
 if(text.includes("skill")){
-return "🧠 Learn Python, JavaScript, AI basics, and communication.";
+return "🧠 Skills to Learn:\n• Python\n• JavaScript\n• DSA\n• AI basics\n• Communication skills";
 }
 
 if(text.includes("career")){
-return "📊 Step 1: Skills → Step 2: Projects → Step 3: Internship → Step 4: Job.";
+return "📊 Career Roadmap:\nStep 1: Learn Skills\nStep 2: Build Projects\nStep 3: Internship\nStep 4: Job\nStep 5: Growth";
 }
 
-if(text.includes("ai")){
-return "🤖 AI Path: Learn Python → ML → Projects → Kaggle → Internship.";
+return "💡 Keep learning, stay consistent, and build real projects 🚀";
 }
 
-return "💡 Keep learning, build projects, stay consistent 🚀";
-}
-
-/* SEND */
 function send(){
 
 let input=document.getElementById("input");
 let text=input.value.trim();
 
 if(!text){
-alert("Type something!");
+alert("Please type something!");
 return;
 }
 
 addMsg(text,"user");
 
 setTimeout(()=>{
-addMsg("🤖 "+getAnswer(text),"bot");
+addMsg("🤖 "+getAI(text),"bot");
 },500);
 
 input.value="";
 }
 
-/* QUICK BUTTONS */
 function quick(type){
 
 let msg="";
 
-if(type==="resume") msg="How to improve resume?";
+if(type==="resume") msg="How to improve my resume?";
 if(type==="job") msg="How to get job?";
-if(type==="interview") msg="Interview tips?";
+if(type==="interview") msg="Interview preparation tips?";
 if(type==="skills") msg="Best skills to learn?";
 if(type==="career") msg="Career roadmap?";
-if(type==="ai") msg="AI career advice?";
 
 document.getElementById("input").value=msg;
 send();
@@ -214,3 +219,5 @@ send();
 
 </body>
 </html>
+
+
